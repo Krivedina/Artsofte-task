@@ -7,18 +7,28 @@ export class LocalStorageControllerService {
   constructor() {
   }
 
+  private specialKeyPrefix = 'card-fields-id:';
+
+  private addSpecialKeyPrefix(value) {
+    return this.specialKeyPrefix + value;
+  }
+
   public getArrayOfRecord() {
-    return Object.values(localStorage).map(record => JSON.parse(record));
+    const data = Object.keys(localStorage).filter(keys => keys.includes(this.specialKeyPrefix));
+    return data.map(key => JSON.parse(localStorage.getItem(key)));
   }
 
   public checkKeyExist(urlId) {
-    return Object.keys(localStorage).find(id => id === urlId);
+    const specialKey = this.addSpecialKeyPrefix(urlId);
+    return Object.keys(localStorage).find(id => id === specialKey);
   }
 
   public createRecordToStorage(data) {
     const uniqueId = this.createNewId();
     const newRecord = this.createNewRecord(data, uniqueId);
-    localStorage.setItem(uniqueId.toString(), JSON.stringify(newRecord));
+    const specialKey = this.addSpecialKeyPrefix(uniqueId);
+    const jsonData = JSON.stringify(newRecord);
+    localStorage.setItem(specialKey, jsonData);
   }
 
   private createNewRecord(data, uniqueId) {
@@ -40,11 +50,13 @@ export class LocalStorageControllerService {
   }
 
   public getSpecificFields(id) {
-    console.log(JSON.parse(localStorage.getItem(id)));
-    return JSON.parse(localStorage.getItem(id)).cardsFields;
+    const specialKey = this.addSpecialKeyPrefix(id);
+    const necessaryItem = localStorage.getItem(specialKey);
+    const jsonParseData = JSON.parse(necessaryItem);
+    return jsonParseData.cardsFields;
   }
 
   public deleteFields(id) {
-    localStorage.removeItem(id);
+    localStorage.removeItem(this.addSpecialKeyPrefix(id));
   }
 }

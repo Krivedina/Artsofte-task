@@ -5,7 +5,7 @@ import {HistoryComponent} from './layout/history/history.component';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'transactions', pathMatch: 'full'},
+  {path: '', redirectTo: 'transaction', pathMatch: 'full'},
   {path: 'transaction', component: TransactionComponent},
   {path: 'transaction/:id', component: TransactionComponent},
   {path: 'history', component: HistoryComponent}
