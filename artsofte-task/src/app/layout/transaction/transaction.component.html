@@ -1,0 +1,65 @@
+<section class="page__wrapper">
+  <div class="page__content">
+    <form [formGroup]="transactionForm" class="form__wrapper">
+      <article class="card__wrapper">
+        <div>
+          <p class="title-style">Номер карты плательщика</p>
+          <input class="card__number"
+                 type="text"
+                 placeholder="0000 0000 0000 0000"
+                 mask="0000 0000 0000 0000"
+                 formControlName="prayerNumber"
+                 [dropSpecialCharacters]="false"
+          >
+        </div>
+        <div class="card-payer__bottom">
+          <div>
+            <p class="title-style">Имя и Фамилия держателя</p>
+            <input class="prayer__name"
+                   type="text"
+                   mask="S* S*"
+                   formControlName="prayerName"
+                   placeholder="NAME SURNAME"
+                   [dropSpecialCharacters]="false">
+          </div>
+          <div>
+            <p class="title-style">Активна до</p>
+            <select title="Месяц" formControlName="prayerCardMonth" class="prayer__shelf-life">
+              <option *ngFor="let month of monthList" value="{{month}}">{{month}}</option>
+            </select>
+            <span>/</span>
+            <select title="Год" formControlName="prayerCardYear" class="prayer__shelf-life">
+              <option *ngFor="let year of yearList" value="{{year}}">{{year}}</option>
+            </select>
+          </div>
+        </div>
+      </article>
+      <div class="arrow">&rarr;</div>
+      <article class="recipient-card__wrapper">
+        <p class="title-style">Номер карты получателя</p>
+        <input class="card__number"
+               formControlName="recipientNumber"
+               type="text"
+               mask="0000 0000 0000 0000"
+               placeholder="0000 0000 0000 0000"
+               [dropSpecialCharacters]="false">
+      </article>
+      <div class="outer-fields__wrapper">
+        <div class="card-sum__wrapper">
+          <input formControlName="transactionSum"
+                 mask="0*"
+                 (change)="checkCorrectChangeSumInput()"
+                 type="text"
+                 placeholder="Введите сумму до 1000000"
+                 class="card__sum">
+        </div>
+        <button [disabled]="!transactionForm.valid"
+                (click)="sendCardDataToLocalStorage()"
+                class="card__send-button">
+          Отправить
+        </button>
+        <div class="payment__success" *ngIf="resultMessageStatus">{{resultMessage}}</div>
+      </div>
+    </form>
+  </div>
+</section>

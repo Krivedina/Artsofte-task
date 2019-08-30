@@ -1,0 +1,23 @@
+<section class="history__wrapper">
+  <article  class="history__header">
+    <span *ngFor="let title of getHeaderTitles()">{{title}}</span>
+  </article>
+  <article *ngFor="let record of getLocalStorageData(); index as i" class="history__content">
+    <span>{{i + 1}}</span>
+    <span>{{createTableCardNumber(record.cardsFields.prayerNumber)}}</span>
+    <span>{{createTableCardNumber(record.cardsFields.recipientNumber)}}</span>
+    <span>{{record.cardsFields.transactionSum}}</span>
+    <span>{{record.date}}</span>
+    <div>
+      <button value="{{record.id}} "
+              routerLink="/transaction/{{ record.id }}">
+        Повторить
+      </button>
+      <button
+        value="{{record.id}}"
+        (click)="deleteFieldsFromLocalStorage(record.id)">
+        Удалить
+      </button>
+    </div>
+  </article>
+</section>
